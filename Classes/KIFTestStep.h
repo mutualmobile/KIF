@@ -453,8 +453,6 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  */
 + (id)stepToTapRowInTableViewWithAccessibilityLabel:(NSString*)tableViewLabel atIndexPath:(NSIndexPath *)indexPath;
 
-+ (id)mm_stepToTapCellInCollectionViewWithAccessibilityLabel:(NSString *)collectionViewLabel atIndexPath:(NSIndexPath *)indexPath;
-
 /*!
  @enum KIFSwipeDirection
  @abstract Directions in which to swipe.

@@ -631,34 +631,6 @@ typedef CGPoint KIFDisplacement;
     }];
 }
 
-+ (id)mm_stepToTapCellInCollectionViewWithAccessibilityLabel:(NSString *)collectionViewLabel atIndexPath:(NSIndexPath *)indexPath {
-    NSString *description = [NSString stringWithFormat:@"Step to tap item %d in collection view with label %@", [indexPath row], collectionViewLabel];
-    return [KIFTestStep stepWithDescription:description executionBlock:^(KIFTestStep *step, NSError **error) {
-        UIAccessibilityElement *element = [[UIApplication sharedApplication] accessibilityElementWithLabel:collectionViewLabel];
-        KIFTestCondition(element, error, @"View with label %@ not found", collectionViewLabel);
-        UICollectionView *collectionView = (UICollectionView*)[UIAccessibilityElement viewContainingAccessibilityElement:element];
-        
-        KIFTestCondition([collectionView isKindOfClass:[UICollectionView class]], error, @"Specified view is not a UICollectionView");
-        
-        KIFTestCondition(collectionView, error, @"Collection view with label %@ not found", collectionViewLabel);
-        
-        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-        if (!cell) {
-            KIFTestCondition([indexPath section] < [collectionView numberOfSections], error, @"Section %d is not found in '%@' table view", [indexPath section], collectionViewLabel);
-            KIFTestCondition([indexPath row] < [collectionView numberOfItemsInSection:[indexPath section]], error, @"Row %d is not found in section %d of '%@' table view", [indexPath row], [indexPath section], collectionViewLabel);
-            [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
-            cell = [collectionView cellForItemAtIndexPath:indexPath];
-        }
-        KIFTestCondition(cell, error, @"Table view cell at index path %@ not found", indexPath);
-        
-        CGRect cellFrame = [cell.contentView convertRect:[cell.contentView frame] toView:collectionView];
-        [collectionView tapAtPoint:CGPointCenteredInRect(cellFrame)];
-        
-        return KIFTestStepResultSuccess;
-    }];
-}
-
 
 #define NUM_POINTS_IN_SWIPE_PATH 20
 
