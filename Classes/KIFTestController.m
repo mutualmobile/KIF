@@ -473,9 +473,8 @@ static void releaseInstance()
     return failureCount;
 }
 
-- (void)registerLogger:(KIFTestLogger*) logger
+- (void)registerLogger:(id<KIFTestLoggerProtocol>) logger
 {
-    [logger setupController: self];
     [loggers addObject:logger];
 }
 
@@ -484,56 +483,56 @@ static void releaseInstance()
 - (void)_logTestingDidStart;
 {
     for(KIFTestLogger* logger in loggers) { 
-        [logger logTestingDidStart];
+        [logger testControllerLogTestingDidStart:self];
     }
 }
 
 - (void)_logTestingDidFinish;
 {
     for(KIFTestLogger* logger in loggers) { 
-        [logger logTestingDidFinish];
+        [logger testControllerLogTestingDidFinish:self];
     }
 }
 
 - (void)_logDidStartScenario:(KIFTestScenario *)scenario;
 {
     for(KIFTestLogger* logger in loggers) { 
-        [logger logDidStartScenario:scenario];
+        [logger testController:self logDidSkipScenario:scenario];
     }
 }
 
 - (void)_logDidSkipScenario:(KIFTestScenario *)scenario;
 {
     for(KIFTestLogger* logger in loggers) {
-        [logger logDidSkipScenario:scenario];
+        [logger testController:self logDidSkipScenario:scenario];
     }
 }
 
 - (void)_logDidSkipAddingScenarioGenerator:(NSString *)selectorString;
 {
     for(KIFTestLogger* logger in loggers) { 
-        [logger logDidSkipAddingScenarioGenerator:selectorString];
+        [logger testController:self logDidSkipAddingScenarioGenerator:selectorString];
     }
 }
 
 - (void)_logDidFinishScenario:(KIFTestScenario *)scenario duration:(NSTimeInterval)duration
 {
     for(KIFTestLogger* logger in loggers) { 
-        [logger logDidFinishScenario:scenario duration:duration];
+        [logger testController:self logDidFinishScenario:scenario duration:duration];
     }
 }
 
 - (void)_logDidFailStep:(KIFTestStep *)step duration:(NSTimeInterval)duration error:(NSError *)error;
 {
-    for(KIFTestLogger* logger in loggers) { 
-        [logger logDidFailStep:step duration:duration error:error];
+    for(KIFTestLogger* logger in loggers) {
+        [logger testController:self logDidFailStep:step duration:duration error:error];
     }
 }
 
 - (void)_logDidPassStep:(KIFTestStep *)step duration:(NSTimeInterval)duration;
 {
     for(KIFTestLogger* logger in loggers) { 
-        [logger logDidPassStep:step duration:duration];
+        [logger testController:self logDidPassStep:step duration:duration];
     }
 }
 

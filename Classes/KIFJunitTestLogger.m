@@ -8,18 +8,43 @@
 
 #import "KIFJunitTestLogger.h"
 
-@implementation KIFJunitTestLogger
+@interface KIFJunitTestLogger ()
 
-@synthesize fileHandle;
-@synthesize logDirectoryPath;
+@property (nonatomic, retain) NSFileHandle *fileHandle;
+
+@end
+
+@implementation KIFJunitTestLogger
 
 static NSMutableDictionary* durations = nil;
 static NSMutableDictionary* errors = nil;
 static KIFTestScenario* currentScenario = nil;
 
-- (void)initFileHandle;
-{
-    if (!fileHandle) {
+-(id)initWithLogDirectoryPath:(NSString*)path{
+    self = [self init];
+    if(self){
+        [self setLogDirectoryPath:path];
+    }
+    return self;
+}
+
+-(id)init{
+    self = [self init];
+    if(self){
+        if (durations == nil) {
+            durations = [[NSMutableDictionary alloc] init];
+        }
+        
+        if (errors == nil) {
+            errors = [[NSMutableDictionary alloc] init];
+        }
+    }
+    return self;
+}
+
+-(NSFileHandle*)fileHandle{
+    
+    if (!_fileHandle) {
         NSString *logsDirectory;
         if (!self.logDirectoryPath) {
             logsDirectory = [[NSFileManager defaultManager] createUserDirectory:NSLibraryDirectory];
@@ -30,13 +55,13 @@ static KIFTestScenario* currentScenario = nil;
         else{
             logsDirectory = self.logDirectoryPath;
         }
-
+        
         
         if (![[NSFileManager defaultManager] recursivelyCreateDirectory:logsDirectory]) {
             logsDirectory = nil;
         }
         
-        NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date] dateStyle:NSDateFormatterMediumStyle 
+        NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date] dateStyle:NSDateFormatterMediumStyle
                                                               timeStyle:NSDateFormatterLongStyle];
         dateString = [dateString stringByReplacingOccurrencesOfString:@"/" withString:@"."];
         dateString = [dateString stringByReplacingOccurrencesOfString:@":" withString:@"."];
@@ -48,56 +73,46 @@ static KIFTestScenario* currentScenario = nil;
             [[NSFileManager defaultManager] createFileAtPath:logFilePath contents:[NSData data] attributes:nil];
         }
         
-        fileHandle = [[NSFileHandle fileHandleForWritingAtPath:logFilePath] retain];
+        _fileHandle = [[NSFileHandle fileHandleForWritingAtPath:logFilePath] retain];
         
-        if (fileHandle) {
+        if (_fileHandle) {
             NSLog(@"JUNIT XML RESULTS AT %@", logFilePath);
         }
     }
+    
+    return _fileHandle;
 }
 
-- (void)appendToLog:(NSString*) data;
+- (void)appendToLog:(NSString*) data
 {
-    [self initFileHandle];
     [self.fileHandle writeData:[data dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (void)dealloc;
 {
-    [fileHandle closeFile];
-    [fileHandle release];
+    [_fileHandle closeFile];
+    [_fileHandle release];
     self.logDirectoryPath = nil;
     [errors release];
     [durations release];
     [super dealloc];
 }
 
-
-- (void)_init;
+#pragma mark - Log Methods
+- (void)testControllerLogTestingDidStart:(KIFTestController*)testController;
 {
-    if (durations == nil) {
-        durations = [[NSMutableDictionary alloc] init];
-    }
-    
-    if (errors == nil) { 
-        errors = [[NSMutableDictionary alloc] init];
-    }
+
 }
 
-- (void)logTestingDidStart;
+- (void)testControllerLogTestingDidFinish:(KIFTestController*)testController;
 {
-    [self _init]; 
-}
-
-- (void)logTestingDidFinish;
-{
-    NSTimeInterval totalDuration = -[self.controller.testSuiteStartDate timeIntervalSinceNow];
+    NSTimeInterval totalDuration = -[testController.testSuiteStartDate timeIntervalSinceNow];
     NSString* data = [NSString stringWithFormat: @"<testsuite name=\"%@\" tests=\"%d\" failures=\"%d\" time=\"%0.4f\">\n",
-                      @"KIF Tests", [self.controller.scenarios count], self.controller.failureCount, totalDuration];
+                      @"KIF Tests", [testController.scenarios count], testController.failureCount, totalDuration];
     
     [self appendToLog:data];
     
-    for (KIFTestScenario* scenario in self.controller.scenarios) { 
+    for (KIFTestScenario* scenario in testController.scenarios) { 
         NSNumber* duration = [durations objectForKey: [scenario description]];
         NSError* error = [errors objectForKey: [scenario description]];
         
@@ -118,33 +133,33 @@ static KIFTestScenario* currentScenario = nil;
     [self appendToLog:@"</testsuite>\n"];
 }
 
-- (void)logDidStartScenario:(KIFTestScenario *)scenario;
+- (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFTestScenario *)scenario;
 {
     currentScenario = scenario;
 }
 
-- (void)logDidSkipScenario:(KIFTestScenario *)scenario;
+- (void)testController:(KIFTestController*)testController logDidSkipScenario:(KIFTestScenario *)scenario;
 {
 
 }
 
-- (void)logDidSkipAddingScenarioGenerator:(NSString *)selectorString;
+- (void)testController:(KIFTestController*)testController logDidSkipAddingScenarioGenerator:(NSString *)selectorString;
 {
     
 }
 
-- (void)logDidFinishScenario:(KIFTestScenario *)scenario duration:(NSTimeInterval)duration;
+- (void)testController:(KIFTestController*)testController logDidFinishScenario:(KIFTestScenario *)scenario duration:(NSTimeInterval)duration;
 {
     NSNumber* number = [[NSNumber alloc] initWithDouble: duration];
     [durations setValue: number forKey: [scenario description]];
 }
 
-- (void)logDidFailStep:(KIFTestStep *)step duration:(NSTimeInterval)duration error:(NSError *)error;
+- (void)testController:(KIFTestController*)testController logDidFailStep:(KIFTestStep *)step duration:(NSTimeInterval)duration error:(NSError *)error;
 {
     [errors setValue:error forKey:[currentScenario description]];
 }
 
-- (void)logDidPassStep:(KIFTestStep *)step duration:(NSTimeInterval)duration;
+- (void)testController:(KIFTestController*)testController logDidPassStep:(KIFTestStep *)step duration:(NSTimeInterval)duration;
 {
     
 }

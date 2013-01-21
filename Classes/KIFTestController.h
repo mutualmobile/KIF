@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 #import "KIFTestScenario.h"
 #import "KIFTestStep.h"
+#import "KIFTestLoggerProtocol.h"
 
 @class KIFTestLogger;
 @protocol KIFTestLogger;
@@ -147,6 +148,6 @@ typedef void (^KIFTestControllerCompletionBlock)();
  @abstract Register another KIFTestLogger which will be used during test execution to report results.
  @param logger A KIFTestLogger implementation.
  */
-- (void)registerLogger:(KIFTestLogger*) logger;
+- (void)registerLogger:(id<KIFTestLoggerProtocol>) logger;
 
 @end

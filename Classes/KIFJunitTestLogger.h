@@ -6,14 +6,20 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "KIFTestLogger.h"
+
+#import <Foundation/Foundation.h>
+#import "KIFTestLoggerProtocol.h"
 #import "NSFileManager-KIFAdditions.h"
 
-@interface KIFJunitTestLogger : KIFTestLogger {
-    NSFileHandle* fileHandle;
+#import "KIFTestController.h"
+#import "KIFTestScenario.h"
+#import "KIFTestStep.h"
+
+@interface KIFJunitTestLogger : NSObject <KIFTestLoggerProtocol> {
 }
 
-@property (nonatomic, retain) NSFileHandle *fileHandle;
 @property (nonatomic, retain) NSString *logDirectoryPath;
+
+- (id)initWithLogDirectoryPath:(NSString*)path;
 
 @end
