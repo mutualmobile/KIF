@@ -17,6 +17,7 @@
 #import "UIWindow-KIFAdditions.h"
 #import "KIFTypist.h"
 
+typedef BOOL (^KIFStepShouldContinueWaitingBlock)(id waitingObject);
 
 static NSTimeInterval KIFTestStepDefaultTimeout = 10.0;
 
@@ -28,6 +29,7 @@ static NSTimeInterval KIFTestStepDefaultTimeout = 10.0;
 @property BOOL notificationOccurred;
 @property BOOL observingForNotification;
 @property (nonatomic, retain) KIFTestStep *childStep;
+@property (nonatomic, copy) KIFStepShouldContinueWaitingBlock shouldContinueWaitingBlock;
 
 + (BOOL)_isUserInteractionEnabledForView:(UIView *)view;
 
@@ -234,12 +236,17 @@ typedef CGPoint KIFDisplacement;
 
 + (id)stepToWaitForNotificationName:(NSString *)name object:(id)object whileExecutingStep:(KIFTestStep *)childStep;
 {
+    return [self stepToWaitForNotificationName:name object:object whileExecutingStep:childStep shouldContinueWaiting:nil];
+}
+
++ (id)stepToWaitForNotificationName:(NSString *)name object:(id)object whileExecutingStep:(KIFTestStep *)childStep shouldContinueWaiting:(BOOL(^)(NSNotification * notification))shouldContinueWaiting{
     NSString *description = [NSString stringWithFormat:@"Wait for notification \"%@\" while executing child step \"%@\"", name, childStep];
     
-    KIFTestStep *step = [self stepWithDescription:description executionBlock:^(KIFTestStep *step, NSError **error) {  
-        if (!step.observingForNotification) {            
+    KIFTestStep *step = [self stepWithDescription:description executionBlock:^(KIFTestStep *step, NSError **error) {
+        if (!step.observingForNotification) {
             step.notificationName = name;
-            step.notificationObject = object; 
+            step.notificationObject = object;
+            step.shouldContinueWaitingBlock = shouldContinueWaiting;
             step.observingForNotification = YES;
             [[NSNotificationCenter defaultCenter] addObserver:step selector:@selector(_onObservedNotification:) name:name object:object];
         }
@@ -251,8 +258,8 @@ typedef CGPoint KIFDisplacement;
         // Wait for the actual notification
         KIFTestWaitCondition(step.notificationOccurred, error, @"Waiting for notification \"%@\"", name);
         return KIFTestStepResultSuccess;
-    }];    
-    step.childStep = childStep;    
+    }];
+    step.childStep = childStep;
     return step;
 }
 
@@ -866,7 +873,14 @@ typedef CGPoint KIFDisplacement;
 
 - (void)_onObservedNotification:(NSNotification *)notification;
 {
-    self.notificationOccurred = YES;
+    if(self.shouldContinueWaitingBlock != nil){
+        if(self.shouldContinueWaitingBlock(notification) == NO){
+            self.notificationOccurred = YES;
+        }
+    }
+    else {
+        self.notificationOccurred = YES;
+    }
 }
 
 + (BOOL)_isUserInteractionEnabledForView:(UIView *)view;
