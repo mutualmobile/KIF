@@ -51,6 +51,7 @@ typedef CGPoint KIFDisplacement;
 @synthesize observingForNotification;
 @synthesize timeout;
 @synthesize childStep;
+@synthesize shouldContinueWaitingBlock;
 
 #pragma mark Class Methods
 
@@ -833,6 +834,7 @@ typedef CGPoint KIFDisplacement;
     notificationObject = nil;
     [childStep release];
     childStep = nil;
+    shouldContinueWaitingBlock = nil;
     
     [super dealloc];
 }
