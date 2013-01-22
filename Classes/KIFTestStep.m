@@ -630,6 +630,16 @@ typedef CGPoint KIFDisplacement;
             [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
             cell = [tableView cellForRowAtIndexPath:indexPath];
         }
+        else {
+            CGRect tableViewVisibleRect = CGRectMake(tableView.contentOffset.x,
+                                                     tableView.contentOffset.y,
+                                                     tableView.bounds.size.width,
+                                                     tableView.bounds.size.height);
+            if(CGRectContainsRect(tableViewVisibleRect, cell.frame) == NO){
+                [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
+            }
+        }
         KIFTestCondition(cell, error, @"Table view cell at index path %@ not found", indexPath);
 
         CGRect cellFrame = [cell.contentView convertRect:[cell.contentView frame] toView:tableView];
