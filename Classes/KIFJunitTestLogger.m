@@ -29,7 +29,7 @@ static KIFTestScenario* currentScenario = nil;
 }
 
 -(id)init{
-    self = [self init];
+    self = [super init];
     if(self){
         if (durations == nil) {
             durations = [[NSMutableDictionary alloc] init];
