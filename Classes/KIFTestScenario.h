@@ -122,4 +122,28 @@
  */
 - (void)addStepsFromArray:(NSArray *)steps;
 
+/*!
+ @method insertStep:afterStep:;
+ @abstract Insert a step to a scenerio after a specific step
+ */
+- (void)insertStep:(KIFTestStep *)step afterStep:(KIFTestStep*)previousStep;
+
+/*!
+ @method insertStepsFromArray:afterStep:
+ @abstract Add multiple steps to the scenario from an array after a specific step.
+ */
+- (void)insertStepsFromArray:(NSArray*)inSteps afterStep:(KIFTestStep*)previousStep;
+
+/*!
+ @method indexOfStep:
+ @abstract Grab the index of a specific step
+ */
+- (NSUInteger)indexOfStep:(KIFTestStep*)step;
+
+/*!
+ @method insertStep:atIndex:;
+ @abstract Insert a step to a scenerio at a specific index
+ */
+- (void)insertStep:(KIFTestStep*)step atIndex:(NSUInteger)index;
+
 @end

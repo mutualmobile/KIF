@@ -133,6 +133,36 @@ static NSArray *defaultStepsToTearDown = nil;
     [steps insertObjects:inSteps atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(steps.count - self.stepsToTearDown.count, inSteps.count)]];
 }
 
+- (void)insertStep:(KIFTestStep *)step afterStep:(KIFTestStep*)previousStep{
+    NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
+    NSAssert([steps containsObject:previousStep], @"The step %@ has not been added", previousStep);
+    
+    [self _initializeStepsIfNeeded];
+    NSUInteger index = [steps indexOfObject:previousStep];
+    
+    [steps insertObject:step atIndex:index+1];
+}
+
+- (void)insertStepsFromArray:(NSArray*)inSteps afterStep:(KIFTestStep*)previousStep{
+    NSAssert([steps containsObject:previousStep], @"The step %@ has not been added", previousStep);
+    for (KIFTestStep *step in inSteps) {
+        NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
+    }
+    
+    NSUInteger index = [steps indexOfObject:previousStep];
+    [steps insertObjects:inSteps atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index+1, inSteps.count)]];
+}
+
+- (NSUInteger)indexOfStep:(KIFTestStep*)step{
+    NSAssert([steps containsObject:step], @"The step %@ is not added", step);
+    return [steps indexOfObject:step];
+}
+
+- (void)insertStep:(KIFTestStep*)step atIndex:(NSUInteger)index{
+    NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
+    [steps insertObject:step atIndex:index];
+}
+
 - (void)setStepsToSetUp:(NSArray *)inStepsToSetUp;
 {
     if ([stepsToSetUp isEqual:inStepsToSetUp]) {
