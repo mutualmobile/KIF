@@ -131,6 +131,7 @@ static KIFTestScenario* currentScenario = nil;
     }
         
     [self appendToLog:@"</testsuite>\n"];
+    NSLog(@"JUnit results can be found at %@",self.logDirectoryPath);
 }
 
 - (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFTestScenario *)scenario;

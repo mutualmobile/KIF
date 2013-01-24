@@ -505,7 +505,7 @@ static void releaseInstance()
 - (void)_logDidStartScenario:(KIFTestScenario *)scenario;
 {
     for(KIFTestLogger* logger in loggers) { 
-        [logger testController:self logDidSkipScenario:scenario];
+        [logger testController:self logDidStartScenario:scenario];
     }
 }
 
