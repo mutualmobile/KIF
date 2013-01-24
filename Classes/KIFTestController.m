@@ -145,9 +145,8 @@ static void releaseInstance()
     
     
     NSString *junitXMLPath = [[[NSProcessInfo processInfo] environment] objectForKey:@"KIF_JUNIT"];
-    
     if(junitXMLPath){
-    [self registerLogger:[[[KIFJunitTestLogger alloc] initWithLogDirectoryPath:junitXMLPath] autorelease]];
+        [self registerLogger:[[[KIFJunitTestLogger alloc] initWithLogDirectoryPath:junitXMLPath] autorelease]];
     }
     
     return self;    
@@ -474,6 +473,7 @@ static void releaseInstance()
     outputPath = [outputPath stringByAppendingPathComponent:[step.description stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
     outputPath = [outputPath stringByAppendingPathExtension:@"png"];
     [UIImagePNGRepresentation(image) writeToFile:outputPath atomically:YES];
+    NSLog(@"Screenshot saved at %@",outputPath);
 }
 
 - (NSInteger)failureCount;

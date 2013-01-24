@@ -101,7 +101,7 @@ static KIFTestScenario* currentScenario = nil;
 #pragma mark - Log Methods
 - (void)testControllerLogTestingDidStart:(KIFTestController*)testController;
 {
-
+    NSLog(@"Logging JUNIT results at %@",self.logDirectoryPath);
 }
 
 - (void)testControllerLogTestingDidFinish:(KIFTestController*)testController;
