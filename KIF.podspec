@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary  = 'Keep It Functional - iOS Test Framework.'
   s.homepage = 'https://github.com/square/KIF'
   s.author   = { 'Square' => 'https://squareup.com/' }
-  s.source   = { :git => 'https://github.com/mutualmobile/KIF.git', :commit => 'd29f3b5804' }
+  s.source   = { :git => 'https://github.com/square/KIF.git', :commit => '8c3246bc9f0a2c81974744143104016b0b32a399' }
 
   s.description = 'KIF, which stands for Keep It Functional, is an iOS integration test framework. It allows for easy automation of iOS apps by leveraging the accessibility attributes that the OS makes available for those with visual disabilities.'
   s.platform = :ios
