@@ -650,7 +650,23 @@ typedef CGPoint KIFDisplacement;
     }];
 }
 
-+ (KIFTestStep *)stepToChangeDeviceOrientation:(UIDeviceOrientation)newOrientation {
++ (NSArray *)stepsToChangeToAndWaitForDeviceOrientation:(UIDeviceOrientation)newOrientation {
+    KIFTestStep *step1 = [KIFTestStep stepToChangeToDeviceOrientation:newOrientation];
+    KIFTestStep *step2 = [KIFTestStep stepToWaitForDeviceOrientation:newOrientation];
+    return @[step1, step2];
+}
+
++ (KIFTestStep *)stepToWaitForDeviceOrientation:(UIDeviceOrientation)newOrientation {
+    return [KIFTestStep stepWithDescription:@"Step to wait for a given device orientation" executionBlock:^KIFTestStepResult(KIFTestStep *step, NSError **error) {
+        if ([[UIDevice currentDevice] orientation] == newOrientation) {
+            return KIFTestStepResultSuccess;
+        } else {
+            return KIFTestStepResultWait;
+        }
+    }];
+}
+
++ (KIFTestStep *)stepToChangeToDeviceOrientation:(UIDeviceOrientation)newOrientation {
     return [KIFTestStep stepWithDescription:@"Step to simulate a change in device orientation"
                              executionBlock:^KIFTestStepResult(KIFTestStep *step, NSError **error) {
                                  [[UIDevice currentDevice] setOrientation:newOrientation
@@ -658,7 +674,6 @@ typedef CGPoint KIFDisplacement;
                                  return KIFTestStepResultSuccess;
                              }];
 }
-
 
 #define NUM_POINTS_IN_SWIPE_PATH 20
 
