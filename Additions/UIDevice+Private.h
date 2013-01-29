@@ -10,6 +10,6 @@
 
 @interface UIDevice (Private)
 
-- (void)setOrientation:(int)arg1 animated:(BOOL)arg2;
+- (void)setOrientation:(UIDeviceOrientation)newOrientation animated:(BOOL)animated;
 
 @end
