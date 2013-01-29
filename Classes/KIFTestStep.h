@@ -168,6 +168,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToWaitForViewWithAccessibilityLabel:(NSString *)label;
++ (id)stepToWaitForViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @method stepToWaitForViewWithAccessibilityLabel:traits:
@@ -202,6 +203,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToWaitForAbsenceOfViewWithAccessibilityLabel:(NSString *)label;
++ (id)stepToWaitForAbsenceOfViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @method stepToWaitForAbsenceOfViewWithAccessibilityLabel:traits:
@@ -232,6 +234,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToWaitForTappableViewWithAccessibilityLabel:(NSString *)label;
++ (id)stepToWaitForTappableViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @method stepToWaitForTappableViewWithAccessibilityLabel:traits:
@@ -305,6 +308,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToTapViewWithAccessibilityLabel:(NSString *)label;
++ (id)stepToTapViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @method stepToTapViewWithAccessibilityLabel:traits:
@@ -349,6 +353,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToLongPressViewWithAccessibilityLabel:(NSString *)label duration:(NSTimeInterval)duration;
++ (id)stepToLongPressViewWithAccessibilityIdentifier:(NSString *)identifier duration:(NSTimeInterval)duration;
 
 /*!
  @method stepToLongPressViewWithAccessibilityLabel:value:duration:
@@ -395,6 +400,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToEnterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label;
++ (id)stepToEnterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @method stepToEnterText:intoViewWithAccessibilityLabel:traits:
@@ -407,6 +413,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToEnterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult;
++ (id)stepToEnterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier expectedResult:(NSString *)expectedResult;
 
 /*!
  @method stepToSelectPickerViewRowWithTitle:
@@ -426,6 +433,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToSetOn:(BOOL)switchIsOn forSwitchWithAccessibilityLabel:(NSString *)label;
++ (id)stepToSetOn:(BOOL)switchIsOn forSwitchWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @method stepToDismissPopover
@@ -464,6 +472,7 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  @result A configured test step.
  */
 + (id)stepToTapRowInTableViewWithAccessibilityLabel:(NSString*)tableViewLabel atIndexPath:(NSIndexPath *)indexPath;
++ (id)stepToTapRowInTableViewWithAccessibilityIdentifier:(NSString*)identifier atIndexPath:(NSIndexPath *)indexPath;
 
 /*!
  @enum KIFSwipeDirection
@@ -489,6 +498,7 @@ typedef enum {
  @result A configured test step.
  */
 + (id)stepToSwipeViewWithAccessibilityLabel:(NSString *)label inDirection:(KIFSwipeDirection)direction;
++ (id)stepToSwipeViewWithAccessibilityIdentifier:(NSString *)identifier inDirection:(KIFSwipeDirection)direction;
 
 /*!
  @method stepToScrollViewWithAccessibilityLabel:byFractionOfSizeHorizontal:vertical:
@@ -500,6 +510,7 @@ typedef enum {
  @result A configured test step.
  */
 + (id)stepToScrollViewWithAccessibilityLabel:(NSString *)label byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction;
++ (id)stepToScrollViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction;
 
 /*!
  @method stepToWaitForFirstResponderWithAccessibilityLabel:
