@@ -16,6 +16,7 @@
 #import "UIView-KIFAdditions.h"
 #import "UIWindow-KIFAdditions.h"
 #import "KIFTypist.h"
+#import "UIDevice+Private.h"
 
 typedef BOOL (^KIFStepShouldContinueWaitingBlock)(id waitingObject);
 
@@ -637,6 +638,15 @@ typedef CGPoint KIFDisplacement;
         
         return KIFTestStepResultSuccess;
     }];
+}
+
++ (KIFTestStep *)stepToChangeDeviceOrientation:(UIDeviceOrientation)newOrientation {
+    return [KIFTestStep stepWithDescription:@"Step to simulate a change in device orientation"
+                             executionBlock:^KIFTestStepResult(KIFTestStep *step, NSError **error) {
+                                 [[UIDevice currentDevice] setOrientation:newOrientation
+                                                                 animated:YES];
+                                 return KIFTestStepResultSuccess;
+                             }];
 }
 
 

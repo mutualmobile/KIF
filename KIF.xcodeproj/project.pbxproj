@@ -35,6 +35,7 @@
 		C194255915D83DE9004FC314 /* KIFTypist.m in Sources */ = {isa = PBXBuildFile; fileRef = C194255715D83DE9004FC314 /* KIFTypist.m */; };
 		CDFD8E86139728B4008D299F /* NSFileManager-KIFAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = CDFD8E84139728B4008D299F /* NSFileManager-KIFAdditions.h */; };
 		CDFD8E87139728B4008D299F /* NSFileManager-KIFAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CDFD8E85139728B4008D299F /* NSFileManager-KIFAdditions.m */; };
+		F58185D216B861F400584A52 /* UIDevice+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F58185D116B861F400584A52 /* UIDevice+Private.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		C194255715D83DE9004FC314 /* KIFTypist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFTypist.m; sourceTree = "<group>"; };
 		CDFD8E84139728B4008D299F /* NSFileManager-KIFAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager-KIFAdditions.h"; sourceTree = "<group>"; };
 		CDFD8E85139728B4008D299F /* NSFileManager-KIFAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager-KIFAdditions.m"; sourceTree = "<group>"; };
+		F58185D116B861F400584A52 /* UIDevice+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Private.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				AAB0729713971AB2008AF393 /* UIAccessibilityElement-KIFAdditions.m */,
 				AAB0729813971AB2008AF393 /* UIApplication-KIFAdditions.h */,
 				AAB0729913971AB2008AF393 /* UIApplication-KIFAdditions.m */,
+				F58185D116B861F400584A52 /* UIDevice+Private.h */,
 				AAB0729A13971AB2008AF393 /* UIScrollView-KIFAdditions.h */,
 				AAB0729B13971AB2008AF393 /* UIScrollView-KIFAdditions.m */,
 				AAB0729C13971AB2008AF393 /* UITouch-KIFAdditions.h */,
@@ -181,6 +184,7 @@
 				CDFD8E86139728B4008D299F /* NSFileManager-KIFAdditions.h in Headers */,
 				39160B1113D1E6BB00311E38 /* LoadableCategory.h in Headers */,
 				C194255815D83DE9004FC314 /* KIFTypist.h in Headers */,
+				F58185D216B861F400584A52 /* UIDevice+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
