@@ -70,11 +70,58 @@ typedef struct __GSEvent * GSEventRef;
 
 - (UIAccessibilityElement *)accessibilityElementWithIdentifier:(NSString *)identifier
 {
+    NSLog(@"Searching for %@ in %@", identifier, self);
     return [self accessibilityElementMatchingBlock:^(UIAccessibilityElement *element) {
         BOOL identifiersMatch = [element.accessibilityIdentifier isEqual:identifier];
         
         return identifiersMatch;
     }];
+}
+
+- (id)viewWithAccessibilityIdentifier:(NSString *)identifier {
+    if ([self.accessibilityIdentifier isEqualToString:identifier]) {
+        return self;
+    }
+    
+    UIView *subview = [self subviewWithAccessibilityIdentifier:identifier];
+    
+    if (subview != nil) {
+        return subview;
+    }
+    
+    return nil;
+}
+
+- (id)viewWithAccessibilityIdentifierPath:(NSString *)identifierPath {
+    NSArray *identifiers = [identifierPath componentsSeparatedByString:@"."];
+    
+    return [self viewWithAccessibilityIdentifiers:identifiers];
+}
+
+- (id)viewWithAccessibilityIdentifiers:(NSArray *)identifiers {
+    UIView *view = self;
+    
+    for (NSString *identifier in identifiers) {
+        view = [view viewWithAccessibilityIdentifier:identifier];
+        
+        if (view == nil) {
+            return nil;
+        }
+    }
+    
+    return view;
+}
+
+- (id)subviewWithAccessibilityIdentifier:(NSString *)identifier {
+    for (UIView *subview in self.subviews) {
+        UIView *view = [subview viewWithAccessibilityIdentifier:identifier];
+        
+        if (view != nil) {
+            return view;
+        }
+    }
+    
+    return nil;
 }
 
 - (UIAccessibilityElement *)accessibilityElementWithLabel:(NSString *)label
@@ -122,6 +169,7 @@ typedef struct __GSEvent * GSEventRef;
     // rather than the real subviews it contains. We want the real views if possible.
     // UITableViewCell is such an offender.
     for (UIView *view in [self.subviews reverseObjectEnumerator]) {
+        NSLog(@"View: %@ - %@", [view accessibilityIdentifier], view);
         UIAccessibilityElement *element = [view accessibilityElementMatchingBlock:matchBlock];
         if (!element) {
             continue;
