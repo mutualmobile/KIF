@@ -11,204 +11,88 @@
 #import "KIFTestStep.h"
 
 
-static NSArray *defaultStepsToSetUp = nil;
-static NSArray *defaultStepsToTearDown = nil;
-
 
 @interface KIFTestScenario ()
 
-@property (nonatomic, readwrite, retain) NSArray *steps;
-@property (nonatomic, readwrite) BOOL skippedByFilter;
-
-- (void)_initializeStepsIfNeeded;
+@property (nonatomic, strong) NSMutableDictionary *state;
 
 @end
 
 
-@implementation KIFTestScenario
 
-@synthesize description;
-@synthesize steps;
-@synthesize stepsToSetUp;
-@synthesize stepsToTearDown;
-@synthesize skippedByFilter;
+@implementation KIFTestScenario
 
 #pragma mark Static Methods
 
-+ (id)scenarioWithDescription:(NSString *)description
-{
-    KIFTestScenario *scenario = [[self alloc] init];
-    scenario.description = description;
-    NSString *filter = [[[NSProcessInfo processInfo] environment] objectForKey:@"KIF_SCENARIO_FILTER"];
-    if (filter) {
-        scenario.skippedByFilter = ([description rangeOfString:filter options:NSRegularExpressionSearch].location == NSNotFound);
-    }
-    
-    return [scenario autorelease];
++ (id)scenarioWithDescription:(NSString *)description {
+    return [[[self alloc] initWithDescription:description] autorelease];
 }
 
-+ (void)setDefaultStepsToSetUp:(NSArray *)steps;
-{
-    if (defaultStepsToSetUp == steps) {
-        return;
-    }
-    
-    [defaultStepsToSetUp release];
-    defaultStepsToSetUp = [steps copy];
+- (id)init {
+    return [self initWithDescription:@"Default description"];
 }
 
-+ (NSArray *)defaultStepsToSetUp;
-{
-    return defaultStepsToSetUp;
-}
-
-+ (void)setDefaultStepsToTearDown:(NSArray *)steps;
-{
-    if (defaultStepsToTearDown == steps) {
-        return;
-    }
-    
-    [defaultStepsToTearDown release];
-    defaultStepsToTearDown = [steps copy];
-}
-
-+ (NSArray *)defaultStepsToTearDown;
-{
-    return defaultStepsToTearDown;
-}
-
-#pragma mark Initialization
-
-- (id)init
-{
+- (id)initWithDescription:(NSString *)description {
     self = [super init];
-    if (!self) {
+    
+    if (self == nil) {
         return nil;
     }
     
-    stepsToSetUp = [defaultStepsToSetUp copy];
-    stepsToTearDown = [defaultStepsToTearDown copy];
+    _description = [description copy];
+    
+    if ([_description length] == 0) {
+        [self release];
+        
+        return nil;
+    }
+    
+    _state = [[NSMutableDictionary alloc] init];
+    
+    if (_state == nil) {
+        [self release];
+        
+        return nil;
+    }
     
     return self;
 }
 
-- (void)dealloc
-{
-    [steps release]; steps = nil;
-    [stepsToSetUp release]; stepsToSetUp = nil;
-    [stepsToTearDown release]; stepsToTearDown = nil;
-    [description release]; description = nil;
+- (void)dealloc {
+    [_description release]; _description = nil;
+    [_state release]; _state = nil;
     
     [super dealloc];
 }
-
-#pragma mark Public Methods
 
 - (void)initializeSteps;
 {
     // For subclasses
 }
 
-- (NSArray *)steps;
-{
-    [self _initializeStepsIfNeeded];
-    return steps;
+#pragma mark Public Methods
+
+- (KIFTestStep *)currentStep {
+    return nil;
 }
 
-- (void)addStep:(KIFTestStep *)step;
-{
-    if (self.skippedByFilter) {
-        return;
-    }
-    NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
+- (void)start {
     
-    [self _initializeStepsIfNeeded];
-    [steps insertObject:step atIndex:(steps.count - self.stepsToTearDown.count)];
 }
 
-- (void)addStepsFromArray:(NSArray *)inSteps;
-{
-    if (self.skippedByFilter) {
-        return;
-    }
-    for (KIFTestStep *step in inSteps) {
-        NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
-    }
-    
-    [self _initializeStepsIfNeeded];
-    [steps insertObjects:inSteps atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(steps.count - self.stepsToTearDown.count, inSteps.count)]];
+- (void)advanceToNextStep {
 }
 
-- (void)insertStep:(KIFTestStep *)step afterStep:(KIFTestStep*)previousStep{
-    NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
-    NSAssert([steps containsObject:previousStep], @"The step %@ has not been added", previousStep);
-    
-    [self _initializeStepsIfNeeded];
-    NSUInteger index = [steps indexOfObject:previousStep];
-    
-    [steps insertObject:step atIndex:index+1];
+- (id)stateForKey:(NSString *)key {
+    return [self.state objectForKey:key];
 }
 
-- (void)insertStepsFromArray:(NSArray*)inSteps afterStep:(KIFTestStep*)previousStep{
-    NSAssert([steps containsObject:previousStep], @"The step %@ has not been added", previousStep);
-    for (KIFTestStep *step in inSteps) {
-        NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
-    }
-    
-    NSUInteger index = [steps indexOfObject:previousStep];
-    [steps insertObjects:inSteps atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index+1, inSteps.count)]];
+- (void)setState:(id)state forKey:(NSString *)key {
+    [self.state setObject:state forKey:key];
 }
 
-- (NSUInteger)indexOfStep:(KIFTestStep*)step{
-    NSAssert([steps containsObject:step], @"The step %@ is not added", step);
-    return [steps indexOfObject:step];
-}
-
-- (void)insertStep:(KIFTestStep*)step atIndex:(NSUInteger)index{
-    NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
-    [steps insertObject:step atIndex:index];
-}
-
-- (void)setStepsToSetUp:(NSArray *)inStepsToSetUp;
-{
-    if ([stepsToSetUp isEqual:inStepsToSetUp]) {
-        return;
-    }
-    
-    // Remove the old set up steps and add the new ones
-    // If steps hasn't been set up yet, that's fine
-    [steps removeObjectsInRange:NSMakeRange(0, stepsToSetUp.count)];
-    [steps insertObjects:inStepsToSetUp atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, inStepsToSetUp.count)]];
-    
-    [stepsToSetUp release];
-    stepsToSetUp = [inStepsToSetUp copy];
-}
-
-- (void)setStepsToTearDown:(NSArray *)inStepsToTearDown;
-{
-    if ([stepsToTearDown isEqual:inStepsToTearDown]) {
-        return;
-    }
-        
-    // Remove the old tear down steps and add the new ones
-    // If steps hasn't been set up yet, that's fine
-    [steps removeObjectsInRange:NSMakeRange(steps.count - stepsToTearDown.count, stepsToTearDown.count)];
-    [steps insertObjects:inStepsToTearDown atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(steps.count, inStepsToTearDown.count)]];
-    
-    [stepsToTearDown release];
-    stepsToTearDown = [inStepsToTearDown copy];
-}
-
-#pragma mark Private Methods
-
-- (void)_initializeStepsIfNeeded;
-{
-    if (!steps && !self.skippedByFilter) {
-        NSMutableArray *initialSteps = [NSMutableArray arrayWithArray:self.stepsToSetUp];
-        [initialSteps addObjectsFromArray:self.stepsToTearDown];
-        self.steps = initialSteps;
-        [self initializeSteps];
-    }
+- (NSString *)stepDescription {
+    return @"No steps";
 }
 
 @end

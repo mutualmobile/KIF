@@ -9,6 +9,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import "KIFTestResult.h"
+
+
 
 /*!
  @define KIFTestCondition
@@ -78,15 +81,17 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  
  Steps are the building blocks of scenarios, and should be very simple. A number of useful factory steps are provided for mimicking basic user interaction. These steps leverage the built in accessibility of iOS to find and interact with views. As such, the accessibility inspector needs to be enabled under Settings in the simulator for them to work.
  */
-@interface KIFTestStep : NSObject {
+@interface KIFTestStep : NSObject <KIFTestResult> {
     KIFTestStepExecutionBlock executionBlock;
     NSString *description;
     NSString *notificationName;
     id notificationObject;
     BOOL notificationOccurred;
     BOOL observingForNotification;
-    NSTimeInterval timeout;    
+    NSTimeInterval timeout;
 }
+
+@property (nonatomic, strong) id result;
 
 /*!
  @property timeout

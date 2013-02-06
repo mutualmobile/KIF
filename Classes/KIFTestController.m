@@ -254,7 +254,8 @@ static void releaseInstance()
 
     self.currentScenario = [self _nextScenarioAfterResult:KIFTestStepResultSuccess];
     self.currentScenarioStartDate = [NSDate date];
-    self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+    [self.currentScenario start];
+    self.currentStep = [self.currentScenario currentStep];
     self.currentStepStartDate = [NSDate date];
     self.completionBlock = inCompletionBlock;
     
@@ -346,7 +347,8 @@ static void releaseInstance()
             
             self.currentScenario = [self _nextScenarioAfterResult:result];
             self.currentScenarioStartDate = [NSDate date];
-            self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+            [self.currentScenario start];
+            self.currentStep = [self.currentScenario currentStep];
             self.currentStepStartDate = [NSDate date];
             failureCount++;
             break;
@@ -359,7 +361,8 @@ static void releaseInstance()
             if (!self.currentStep) {
                 self.currentScenario = [self _nextScenarioAfterResult:result];
                 self.currentScenarioStartDate = [NSDate date];
-                self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+                [self.currentScenario start];
+                self.currentStep = [self.currentScenario currentStep];
             }
             self.currentStepStartDate = [NSDate date];
             break;
@@ -381,17 +384,8 @@ static void releaseInstance()
 
 - (KIFTestStep *)_nextStep;
 {
-    NSArray *steps = self.currentScenario.steps;
-    NSUInteger currentStepIndex = [steps indexOfObjectIdenticalTo:self.currentStep];
-    NSAssert(currentStepIndex != NSNotFound, @"Current step %@ not found in current scenario %@, but should be!", self.currentStep, self.currentScenario);
-    
-    NSUInteger nextStepIndex = currentStepIndex + 1;
-    KIFTestStep *nextStep = nil;
-    if ([steps count] > nextStepIndex) {
-        nextStep = [steps objectAtIndex:nextStepIndex];
-    }
-    
-    return nextStep;
+    [self.currentScenario advanceToNextStep];
+    return [self.currentScenario currentStep];
 }
 
 - (KIFTestScenario *)_nextScenarioAfterResult:(KIFTestStepResult)result;

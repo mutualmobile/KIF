@@ -73,7 +73,7 @@
 {
     KIFLogBlankLine();
     KIFLogSeparator();
-    KIFLog(@"BEGIN SCENARIO %d/%d (%d steps)", [testController.scenarios indexOfObjectIdenticalTo:scenario] + 1, testController.scenarios.count, scenario.steps.count);
+    KIFLog(@"BEGIN SCENARIO %d/%d", [testController.scenarios indexOfObjectIdenticalTo:scenario] + 1, testController.scenarios.count);
     KIFLog(@"%@", scenario.description);
     KIFLogSeparator();
 }
