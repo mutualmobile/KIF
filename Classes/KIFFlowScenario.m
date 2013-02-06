@@ -65,19 +65,8 @@
     }
 }
 
-- (void)addScenarios:(NSDictionary *)scenarios {
-    for (id key in scenarios) {
-        id object = [scenarios objectForKey:key];
-        [self addScenario:object forName:key];
-    }
-}
-
-- (void)addStep:(KIFTestStep *)step forName:(NSString *)name {
+- (void)addStep:(id)step forName:(NSString *)name {
     [self.steps setObject:step forKey:name];
-}
-
-- (void)addScenario:(KIFTestScenario *)scenario forName:(NSString *)name {
-    [self.steps setObject:scenario forKey:name];
 }
 
 - (void)startAt:(NSString *)start {
