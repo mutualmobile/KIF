@@ -117,7 +117,7 @@ static KIFTestScenario* currentScenario = nil;
         NSError* error = [errors objectForKey: [scenario description]];
         
         
-        NSString* scenarioSteps = [[scenario.steps valueForKeyPath:@"description"] componentsJoinedByString:@"\n"];
+        NSString* scenarioSteps = [scenario stepDescription];
         NSString* errorMsg =  (error ? [NSString stringWithFormat:@"<failure message=\"%@\">%@</failure>", 
                                         [error localizedDescription], scenarioSteps] :
                                @"");
@@ -152,6 +152,7 @@ static KIFTestScenario* currentScenario = nil;
 {
     NSNumber* number = [[NSNumber alloc] initWithDouble: duration];
     [durations setValue: number forKey: [scenario description]];
+    [number release];
 }
 
 - (void)testController:(KIFTestController*)testController logDidFailStep:(KIFTestStep *)step duration:(NSTimeInterval)duration error:(NSError *)error;
