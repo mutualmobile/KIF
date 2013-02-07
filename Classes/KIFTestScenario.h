@@ -20,6 +20,7 @@
 @interface KIFTestScenario : NSObject <KIFTestResult>
 
 @property (nonatomic, strong) id result;
+@property (nonatomic) BOOL returnsResult;
 
 /*!
  @property description

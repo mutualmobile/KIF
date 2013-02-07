@@ -119,8 +119,12 @@
     
     if ([stepObject isKindOfClass:[KIFTestScenario class]]) {
         KIFTestScenario *scenario = stepObject;
-        id <KIFTestResult> resultObject = [scenario currentStep];
-        scenario.result = [resultObject result];
+        
+        if (scenario.returnsResult) {
+            id <KIFTestResult> resultObject = [scenario currentStep];
+            scenario.result = [resultObject result];
+        }
+        
         [scenario advanceToNextStep];
         id nextStepObject = [scenario currentStep];
         
