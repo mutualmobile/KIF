@@ -93,15 +93,48 @@ static NSArray *defaultStepsToTearDown = nil;
         return nil;
     }
     
-    return [self.steps objectAtIndex:self.currentStepIndex];
+    id step = [self.steps objectAtIndex:self.currentStepIndex];
+    
+    if ([step isKindOfClass:[KIFTestScenario class]]) {
+        KIFTestScenario *scenario = step;
+        
+        return [scenario currentStep];
+    } else {
+        return step;
+    }
 }
 
 - (void)start {
     self.currentStepIndex = 0;
+    id step = [self.steps objectAtIndex:self.currentStepIndex];
+    
+    if ([step isKindOfClass:[KIFTestScenario class]]) {
+        KIFTestScenario *scenario = step;
+        [scenario start];
+    }
 }
 
 - (void)advanceToNextStep {
-    ++self.currentStepIndex;
+    id <KIFTestResult> stepObject = [self.steps objectAtIndex:self.currentStepIndex];
+    
+    if ([stepObject isKindOfClass:[KIFTestScenario class]]) {
+        KIFTestScenario *scenario = stepObject;
+        
+        if (scenario.returnsResult) {
+            id <KIFTestResult> resultObject = [scenario currentStep];
+            scenario.result = [resultObject result];
+        }
+        
+        [scenario advanceToNextStep];
+        id nextStepObject = [scenario currentStep];
+        
+        if (nextStepObject == nil) {
+            // This sub-scenario is finished
+            ++self.currentStepIndex;
+        }
+    } else {
+        ++self.currentStepIndex;
+    }
 }
 
 - (void)initializeSteps;
@@ -115,7 +148,7 @@ static NSArray *defaultStepsToTearDown = nil;
     return steps;
 }
 
-- (void)addStep:(KIFTestStep *)step;
+- (void)addStep:(id)step;
 {
     NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
     
@@ -125,7 +158,7 @@ static NSArray *defaultStepsToTearDown = nil;
 
 - (void)addStepsFromArray:(NSArray *)inSteps;
 {
-    for (KIFTestStep *step in inSteps) {
+    for (id step in inSteps) {
         NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
     }
     
@@ -133,7 +166,7 @@ static NSArray *defaultStepsToTearDown = nil;
     [steps insertObjects:inSteps atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(steps.count - self.stepsToTearDown.count, inSteps.count)]];
 }
 
-- (void)insertStep:(KIFTestStep *)step afterStep:(KIFTestStep*)previousStep{
+- (void)insertStep:(id)step afterStep:(id)previousStep{
     NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
     NSAssert([steps containsObject:previousStep], @"The step %@ has not been added", previousStep);
     
@@ -143,9 +176,9 @@ static NSArray *defaultStepsToTearDown = nil;
     [steps insertObject:step atIndex:index+1];
 }
 
-- (void)insertStepsFromArray:(NSArray*)inSteps afterStep:(KIFTestStep*)previousStep{
+- (void)insertStepsFromArray:(NSArray*)inSteps afterStep:(id)previousStep{
     NSAssert([steps containsObject:previousStep], @"The step %@ has not been added", previousStep);
-    for (KIFTestStep *step in inSteps) {
+    for (id step in inSteps) {
         NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
     }
     
@@ -153,12 +186,12 @@ static NSArray *defaultStepsToTearDown = nil;
     [steps insertObjects:inSteps atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index+1, inSteps.count)]];
 }
 
-- (NSUInteger)indexOfStep:(KIFTestStep*)step{
+- (NSUInteger)indexOfStep:(id)step{
     NSAssert([steps containsObject:step], @"The step %@ is not added", step);
     return [steps indexOfObject:step];
 }
 
-- (void)insertStep:(KIFTestStep*)step atIndex:(NSUInteger)index{
+- (void)insertStep:(id)step atIndex:(NSUInteger)index{
     NSAssert(![steps containsObject:step], @"The step %@ is already added", step);
     [steps insertObject:step atIndex:index];
 }
