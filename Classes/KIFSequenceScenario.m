@@ -130,10 +130,25 @@ static NSArray *defaultStepsToTearDown = nil;
         
         if (nextStepObject == nil) {
             // This sub-scenario is finished
-            ++self.currentStepIndex;
+            [self transitionToNextStep];
         }
     } else {
-        ++self.currentStepIndex;
+        [self transitionToNextStep];
+    }
+}
+
+- (void)transitionToNextStep {
+    ++self.currentStepIndex;
+    
+    if (self.currentStepIndex >= [self.steps count]) {
+        return;
+    }
+    
+    id nextStepObject = self.steps[self.currentStepIndex];
+    
+    if ([nextStepObject isKindOfClass:[KIFTestScenario class]]) {
+        KIFTestScenario *nextScenario = nextStepObject;
+        [nextScenario start];
     }
 }
 
