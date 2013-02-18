@@ -86,6 +86,7 @@
 		C194255715D83DE9004FC314 /* KIFTypist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFTypist.m; sourceTree = "<group>"; };
 		CDFD8E84139728B4008D299F /* NSFileManager-KIFAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager-KIFAdditions.h"; sourceTree = "<group>"; };
 		CDFD8E85139728B4008D299F /* NSFileManager-KIFAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager-KIFAdditions.m"; sourceTree = "<group>"; };
+		E51B0A5A16C2C58800755F15 /* KIFTestResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KIFTestResult.h; sourceTree = "<group>"; };
 		F58185D116B861F400584A52 /* UIDevice+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Private.h"; sourceTree = "<group>"; };
 		E51B0A5A16C2C58800755F15 /* KIFTestResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KIFTestResult.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -214,6 +215,8 @@
 				C194255815D83DE9004FC314 /* KIFTypist.h in Headers */,
 				29EA6F3E16ADF6B500E904B2 /* KIFJunitTestLogger.h in Headers */,
 				29EA6F4216ADF6CA00E904B2 /* KIFTestLogger.h in Headers */,
+				2C17F39316C178860017B499 /* KIFFlowScenario.h in Headers */,
+				2C17F39716C191110017B499 /* KIFSequenceScenario.h in Headers */,
 				F58185D216B861F400584A52 /* UIDevice+Private.h in Headers */,
 				2C17F39316C178860017B499 /* KIFFlowScenario.h in Headers */,
 				2C17F39716C191110017B499 /* KIFSequenceScenario.h in Headers */,
