@@ -528,4 +528,30 @@ typedef enum {
  */
 + (id)stepToWaitForFirstResponderWithAccessibilityLabel:(NSString *)label;
 
+/*!
+ @method stepsToChangeToAndWaitForDeviceOrientation:
+ @abstract A step that simulates a change to the device's user interface orientation, and then waits to ensure the change was successful.
+ @discussion These steps rely on a private Apple API call that might change in future versions of the operating system.
+ @param newOrientation The orientation to change to.
+ @result An array of configured test steps.
+ */
++ (NSArray *)stepsToChangeToAndWaitForDeviceOrientation:(UIDeviceOrientation)newOrientation;
+
+/*!
+ @method stepToChangeToDeviceOrientation:
+ @abstract A step that simulates a change to the device's user interface orientation.
+ @discussion This step relies on a private Apple API call that might change in future versions of the operating system.
+ @param newOrientation The orientation to change to.
+ @result A configured test step.
+ */
++ (KIFTestStep *)stepToChangeToDeviceOrientation:(UIDeviceOrientation)newOrientation;
+
+/*!
+ @method stepToWaitForDeviceOrientation:
+ @abstract A step that waits for a change to the device's user interface orientation.
+ @param newOrientation The orientation to wait for.
+ @result A configured test step.
+ */
++ (KIFTestStep *)stepToWaitForDeviceOrientation:(UIDeviceOrientation)newOrientation;
+
 @end

@@ -11,6 +11,7 @@
 #import "KIFTestScenario.h"
 #import "KIFTestStep.h"
 #import "KIFTestLogger.h"
+#import "KIFJunitTestLogger.h"
 
 #import "NSFileManager-KIFAdditions.h"
 #import <QuartzCore/QuartzCore.h>
@@ -141,6 +142,12 @@ static void releaseInstance()
     
     loggers = [[NSMutableArray alloc] init];
     [self registerLogger:[[[KIFTestLogger alloc] init] autorelease]];
+    
+    
+    NSString *junitXMLPath = [[[NSProcessInfo processInfo] environment] objectForKey:@"KIF_JUNIT"];
+    if(junitXMLPath){
+        [self registerLogger:[[[KIFJunitTestLogger alloc] initWithLogDirectoryPath:junitXMLPath] autorelease]];
+    }
     
     return self;    
 }
@@ -476,6 +483,7 @@ static void releaseInstance()
     outputPath = [outputPath stringByAppendingPathComponent:[step.description stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
     outputPath = [outputPath stringByAppendingPathExtension:@"png"];
     [UIImagePNGRepresentation(image) writeToFile:outputPath atomically:YES];
+    NSLog(@"Screenshot saved at %@",outputPath);
 }
 
 - (NSInteger)failureCount;
@@ -507,7 +515,7 @@ static void releaseInstance()
 - (void)_logDidStartScenario:(KIFTestScenario *)scenario;
 {
     for(KIFTestLogger* logger in loggers) { 
-        [logger testController:self logDidSkipScenario:scenario];
+        [logger testController:self logDidStartScenario:scenario];
     }
 }
 

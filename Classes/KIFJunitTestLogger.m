@@ -29,7 +29,7 @@ static KIFTestScenario* currentScenario = nil;
 }
 
 -(id)init{
-    self = [self init];
+    self = [super init];
     if(self){
         if (durations == nil) {
             durations = [[NSMutableDictionary alloc] init];
@@ -101,7 +101,7 @@ static KIFTestScenario* currentScenario = nil;
 #pragma mark - Log Methods
 - (void)testControllerLogTestingDidStart:(KIFTestController*)testController;
 {
-
+    NSLog(@"Logging JUNIT results at %@",self.logDirectoryPath);
 }
 
 - (void)testControllerLogTestingDidFinish:(KIFTestController*)testController;
@@ -131,6 +131,7 @@ static KIFTestScenario* currentScenario = nil;
     }
         
     [self appendToLog:@"</testsuite>\n"];
+    NSLog(@"JUnit results can be found at %@",self.logDirectoryPath);
 }
 
 - (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFTestScenario *)scenario;
