@@ -12,6 +12,12 @@
 
 @interface UIApplication (KIFAdditions)
 
+- (id)viewWithAccessibilityIdentifier:(NSString *)identifier;
+- (id)viewWithAccessibilityIdentifierPath:(NSString *)identifierPath;
+- (id)viewWithAccessibilityIdentifiers:(NSArray *)identifiers;
+
+- (UIAccessibilityElement *)accessibilityElementWithIdentifier:(NSString *)identifier;
+
 - (UIAccessibilityElement *)accessibilityElementWithLabel:(NSString *)label;
 - (UIAccessibilityElement *)accessibilityElementWithLabel:(NSString *)label traits:(UIAccessibilityTraits)traits;
 - (UIAccessibilityElement *)accessibilityElementWithLabel:(NSString *)label accessibilityValue:(NSString *)value traits:(UIAccessibilityTraits)traits;

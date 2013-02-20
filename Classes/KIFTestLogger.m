@@ -69,16 +69,16 @@
     NSLog(@"*** KIF TESTING FINISHED: %d failures", testController.failureCount);
 }
 
-- (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFTestScenario *)scenario;
+- (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFBaseScenario *)scenario;
 {
     KIFLogBlankLine();
     KIFLogSeparator();
-    KIFLog(@"BEGIN SCENARIO %d/%d (%d steps)", [testController.scenarios indexOfObjectIdenticalTo:scenario] + 1, testController.scenarios.count, scenario.steps.count);
+    KIFLog(@"BEGIN SCENARIO %d/%d", [testController.scenarios indexOfObjectIdenticalTo:scenario] + 1, testController.scenarios.count);
     KIFLog(@"%@", scenario.description);
     KIFLogSeparator();
 }
 
-- (void)testController:(KIFTestController*)testController logDidSkipScenario:(KIFTestScenario *)scenario;
+- (void)testController:(KIFTestController*)testController logDidSkipScenario:(KIFBaseScenario *)scenario;
 {
     KIFLogBlankLine();
     KIFLogSeparator();
@@ -93,7 +93,7 @@
     KIFLog(@"Skipping scenario generator %@ because it takes arguments", selectorString);
 }
 
-- (void)testController:(KIFTestController*)testController logDidFinishScenario:(KIFTestScenario *)scenario duration:(NSTimeInterval)duration
+- (void)testController:(KIFTestController*)testController logDidFinishScenario:(KIFBaseScenario *)scenario duration:(NSTimeInterval)duration
 {
     KIFLogSeparator();
     KIFLog(@"END OF SCENARIO (duration %.2fs)", duration);

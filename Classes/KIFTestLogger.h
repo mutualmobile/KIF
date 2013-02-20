@@ -10,7 +10,7 @@
 #import "KIFTestLoggerProtocol.h"
 
 #import "KIFTestController.h"
-#import "KIFTestScenario.h"
+#import "KIFBaseScenario.h"
 #import "KIFTestStep.h"
 
 @interface KIFTestLogger : NSObject <KIFTestLoggerProtocol> {

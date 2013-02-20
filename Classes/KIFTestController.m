@@ -8,7 +8,7 @@
 //  which Square, Inc. licenses this file to you.
 
 #import "KIFTestController.h"
-#import "KIFTestScenario.h"
+#import "KIFBaseScenario.h"
 #import "KIFTestStep.h"
 #import "KIFTestLogger.h"
 #import "KIFJunitTestLogger.h"
@@ -24,7 +24,7 @@ extern id objc_msgSend(id theReceiver, SEL theSelector, ...);
 
 @interface KIFTestController ()
 
-@property (nonatomic, retain) KIFTestScenario *currentScenario;
+@property (nonatomic, retain) KIFBaseScenario *currentScenario;
 @property (nonatomic, retain) KIFTestStep *currentStep;
 @property (nonatomic, retain) NSArray *scenarios;
 @property (nonatomic, getter=isTesting) BOOL testing;
@@ -41,14 +41,14 @@ extern id objc_msgSend(id theReceiver, SEL theSelector, ...);
 - (void)_performTestStep:(KIFTestStep *)step;
 - (void)_advanceWithResult:(KIFTestStepResult)result error:(NSError*) error;
 - (KIFTestStep *)_nextStep;
-- (KIFTestScenario *)_nextScenarioAfterResult:(KIFTestStepResult)result;
+- (KIFBaseScenario *)_nextScenarioAfterResult:(KIFTestStepResult)result;
 - (void)_writeScreenshotForStep:(KIFTestStep *)step;
 - (void)_logTestingDidStart;
 - (void)_logTestingDidFinish;
-- (void)_logDidStartScenario:(KIFTestScenario *)scenario;
-- (void)_logDidSkipScenario:(KIFTestScenario *)scenario;
+- (void)_logDidStartScenario:(KIFBaseScenario *)scenario;
+- (void)_logDidSkipScenario:(KIFBaseScenario *)scenario;
 - (void)_logDidSkipAddingScenarioGenerator:(NSString *)selectorString;
-- (void)_logDidFinishScenario:(KIFTestScenario *)scenario duration:(NSTimeInterval)duration;
+- (void)_logDidFinishScenario:(KIFBaseScenario *)scenario duration:(NSTimeInterval)duration;
 - (void)_logDidFailStep:(KIFTestStep *)step duration:(NSTimeInterval)duration error:(NSError *)error;
 - (void)_logDidPassStep:(KIFTestStep *)step duration:(NSTimeInterval)duration;
 
@@ -189,7 +189,7 @@ static void releaseInstance()
 
 - (void)addAllScenarios;
 {
-    [self addAllScenariosWithSelectorPrefix:@"scenario" fromClass:[KIFTestScenario class]];
+    [self addAllScenariosWithSelectorPrefix:@"scenario" fromClass:[KIFBaseScenario class]];
 }
 
 - (void)addAllScenariosWithSelectorPrefix:(NSString *)selectorPrefix fromClass:(Class)klass;
@@ -222,14 +222,14 @@ static void releaseInstance()
     
     [selectorStrings sortUsingSelector:@selector(compare:)];
     [selectorStrings enumerateObjectsUsingBlock:^(id selectorString, NSUInteger idx, BOOL *stop) {
-        KIFTestScenario *scenario = (KIFTestScenario *)objc_msgSend(klass, NSSelectorFromString(selectorString));
+        KIFBaseScenario *scenario = (KIFBaseScenario *)objc_msgSend(klass, NSSelectorFromString(selectorString));
         [self addScenario:scenario];
     }];
     
     free(methods);
 }
 
-- (void)addScenario:(KIFTestScenario *)scenario;
+- (void)addScenario:(KIFBaseScenario *)scenario;
 {
     NSAssert(![self.scenarios containsObject:scenario], @"The scenario %@ is already added", scenario);
     NSAssert(scenario.description.length, @"Cannot add a scenario that does not have a description");
@@ -254,7 +254,9 @@ static void releaseInstance()
 
     self.currentScenario = [self _nextScenarioAfterResult:KIFTestStepResultSuccess];
     self.currentScenarioStartDate = [NSDate date];
-    self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+    //self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+    [self.currentScenario start];
+    self.currentStep = [self.currentScenario currentStep];
     self.currentStepStartDate = [NSDate date];
     self.completionBlock = inCompletionBlock;
     
@@ -346,7 +348,9 @@ static void releaseInstance()
             
             self.currentScenario = [self _nextScenarioAfterResult:result];
             self.currentScenarioStartDate = [NSDate date];
-            self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+            //self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+            [self.currentScenario start];
+            self.currentStep = [self.currentScenario currentStep];
             self.currentStepStartDate = [NSDate date];
             failureCount++;
             break;
@@ -359,7 +363,9 @@ static void releaseInstance()
             if (!self.currentStep) {
                 self.currentScenario = [self _nextScenarioAfterResult:result];
                 self.currentScenarioStartDate = [NSDate date];
-                self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+                //self.currentStep = (self.currentScenario.steps.count ? [self.currentScenario.steps objectAtIndex:0] : nil);
+                [self.currentScenario start];
+                self.currentStep = [self.currentScenario currentStep];
             }
             self.currentStepStartDate = [NSDate date];
             break;
@@ -381,6 +387,9 @@ static void releaseInstance()
 
 - (KIFTestStep *)_nextStep;
 {
+    [self.currentScenario advanceToNextStep];
+    return [self.currentScenario currentStep];
+    /*
     NSArray *steps = self.currentScenario.steps;
     NSUInteger currentStepIndex = [steps indexOfObjectIdenticalTo:self.currentStep];
     NSAssert(currentStepIndex != NSNotFound, @"Current step %@ not found in current scenario %@, but should be!", self.currentStep, self.currentScenario);
@@ -392,15 +401,16 @@ static void releaseInstance()
     }
     
     return nextStep;
+     */
 }
 
-- (KIFTestScenario *)_nextScenarioAfterResult:(KIFTestStepResult)result;
+- (KIFBaseScenario *)_nextScenarioAfterResult:(KIFTestStepResult)result;
 {
     if (!self.scenarios.count) {
         return nil;
     }
     
-    KIFTestScenario *nextScenario = nil;
+    KIFBaseScenario *nextScenario = nil;
     NSUInteger nextScenarioIndex = NSNotFound;
     NSUInteger currentScenarioIndex = NSNotFound;
     NSInteger scenarioLimit = [[[[NSProcessInfo processInfo] environment] objectForKey:@"KIF_SCENARIO_LIMIT"] integerValue];
@@ -502,14 +512,14 @@ static void releaseInstance()
     }
 }
 
-- (void)_logDidStartScenario:(KIFTestScenario *)scenario;
+- (void)_logDidStartScenario:(KIFBaseScenario *)scenario;
 {
     for(KIFTestLogger* logger in loggers) { 
         [logger testController:self logDidStartScenario:scenario];
     }
 }
 
-- (void)_logDidSkipScenario:(KIFTestScenario *)scenario;
+- (void)_logDidSkipScenario:(KIFBaseScenario *)scenario;
 {
     for(KIFTestLogger* logger in loggers) {
         [logger testController:self logDidSkipScenario:scenario];
@@ -523,7 +533,7 @@ static void releaseInstance()
     }
 }
 
-- (void)_logDidFinishScenario:(KIFTestScenario *)scenario duration:(NSTimeInterval)duration
+- (void)_logDidFinishScenario:(KIFBaseScenario *)scenario duration:(NSTimeInterval)duration
 {
     for(KIFTestLogger* logger in loggers) { 
         [logger testController:self logDidFinishScenario:scenario duration:duration];

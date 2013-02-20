@@ -8,7 +8,7 @@
 //  which Square, Inc. licenses this file to you.
 
 #import <Foundation/Foundation.h>
-#import "KIFTestScenario.h"
+#import "KIFBaseScenario.h"
 #import "KIFTestStep.h"
 #import "KIFTestLoggerProtocol.h"
 
@@ -41,7 +41,7 @@ typedef void (^KIFTestControllerCompletionBlock)();
     BOOL testing;
     KIFTestControllerCompletionBlock completionBlock;
     
-    KIFTestScenario *currentScenario;
+    KIFBaseScenario *currentScenario;
     KIFTestStep *currentStep;
     NSMutableArray *loggers;
     
@@ -72,7 +72,7 @@ typedef void (^KIFTestControllerCompletionBlock)();
  @property currentScenario
  @abstract The scenario that is currently being run.
  */
-@property (nonatomic, readonly, retain) KIFTestScenario *currentScenario;
+@property (nonatomic, readonly, retain) KIFBaseScenario *currentScenario;
 
 /*!
  @property currentStep
@@ -127,7 +127,7 @@ typedef void (^KIFTestControllerCompletionBlock)();
  @discussion Scenarios will be run in the order that they're added.
  @param scenario The scenario to add to the test suite.
  */
-- (void)addScenario:(KIFTestScenario *)scenario;
+- (void)addScenario:(KIFBaseScenario *)scenario;
 
 /*!
  @method startTestingWithCompletionBlock:

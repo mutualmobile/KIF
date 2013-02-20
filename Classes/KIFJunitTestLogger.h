@@ -12,7 +12,7 @@
 #import "NSFileManager-KIFAdditions.h"
 
 #import "KIFTestController.h"
-#import "KIFTestScenario.h"
+#import "KIFBaseScenario.h"
 #import "KIFTestStep.h"
 
 @interface KIFJunitTestLogger : NSObject <KIFTestLoggerProtocol> {
