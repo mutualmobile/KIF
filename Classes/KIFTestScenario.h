@@ -1,5 +1,5 @@
 //
-//  KIFSequenceScenario.h
+//  KIFTestScenario.h
 //  KIF
 //
 //  Created by Justin Kolb on 2/5/13.
@@ -17,7 +17,7 @@
  
  A convenient practice is to add a category on KIFTestScenario which includes factory methods to create the scenarios you want to test. This provides a useful identifier for each scenario via the method name (something like +scenarioToLogInSuccessfully), and also provides an organized place for your application-specific scenarios.
  */
-@interface KIFSequenceScenario : KIFBaseScenario {
+@interface KIFTestScenario : KIFBaseScenario {
     NSMutableArray *steps;
     NSMutableArray *stepsToSetUp;
     NSMutableArray *stepsToTearDown;

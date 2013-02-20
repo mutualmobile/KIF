@@ -13,8 +13,8 @@
 		29EA6F4316ADF6CA00E904B2 /* KIFTestLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA6F4116ADF6CA00E904B2 /* KIFTestLogger.m */; };
 		2C17F39316C178860017B499 /* KIFFlowScenario.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C17F39116C178860017B499 /* KIFFlowScenario.h */; };
 		2C17F39416C178860017B499 /* KIFFlowScenario.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C17F39216C178860017B499 /* KIFFlowScenario.m */; };
-		2C17F39716C191110017B499 /* KIFSequenceScenario.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C17F39516C191110017B499 /* KIFSequenceScenario.h */; };
-		2C17F39816C191110017B499 /* KIFSequenceScenario.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C17F39616C191110017B499 /* KIFSequenceScenario.m */; };
+		2C17F39716C191110017B499 /* KIFTestScenario.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C17F39516C191110017B499 /* KIFTestScenario.h */; };
+		2C17F39816C191110017B499 /* KIFTestScenario.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C17F39616C191110017B499 /* KIFTestScenario.m */; };
 		39160B1113D1E6BB00311E38 /* LoadableCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = 39160B1013D1E6BB00311E38 /* LoadableCategory.h */; };
 		AAB0726C139719AC008AF393 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAB0726B139719AC008AF393 /* Foundation.framework */; };
 		AAB0728213971A63008AF393 /* KIF-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AAB0728113971A63008AF393 /* KIF-Prefix.pch */; };
@@ -54,8 +54,8 @@
 		29EA6F7516ADFF7800E904B2 /* KIFTestLoggerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KIFTestLoggerProtocol.h; sourceTree = "<group>"; };
 		2C17F39116C178860017B499 /* KIFFlowScenario.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFFlowScenario.h; sourceTree = "<group>"; };
 		2C17F39216C178860017B499 /* KIFFlowScenario.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFFlowScenario.m; sourceTree = "<group>"; };
-		2C17F39516C191110017B499 /* KIFSequenceScenario.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFSequenceScenario.h; sourceTree = "<group>"; };
-		2C17F39616C191110017B499 /* KIFSequenceScenario.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFSequenceScenario.m; sourceTree = "<group>"; };
+		2C17F39516C191110017B499 /* KIFTestScenario.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFTestScenario.h; sourceTree = "<group>"; };
+		2C17F39616C191110017B499 /* KIFTestScenario.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFTestScenario.m; sourceTree = "<group>"; };
 		39160B1013D1E6BB00311E38 /* LoadableCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadableCategory.h; sourceTree = "<group>"; };
 		AAB07268139719AC008AF393 /* libKIF.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKIF.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAB0726B139719AC008AF393 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -159,8 +159,8 @@
 				C194255715D83DE9004FC314 /* KIFTypist.m */,
 				2C17F39116C178860017B499 /* KIFFlowScenario.h */,
 				2C17F39216C178860017B499 /* KIFFlowScenario.m */,
-				2C17F39516C191110017B499 /* KIFSequenceScenario.h */,
-				2C17F39616C191110017B499 /* KIFSequenceScenario.m */,
+				2C17F39516C191110017B499 /* KIFTestScenario.h */,
+				2C17F39616C191110017B499 /* KIFTestScenario.m */,
 				E51B0A5A16C2C58800755F15 /* KIFTestResult.h */,
 			);
 			path = Classes;
@@ -215,10 +215,10 @@
 				29EA6F3E16ADF6B500E904B2 /* KIFJunitTestLogger.h in Headers */,
 				29EA6F4216ADF6CA00E904B2 /* KIFTestLogger.h in Headers */,
 				2C17F39316C178860017B499 /* KIFFlowScenario.h in Headers */,
-				2C17F39716C191110017B499 /* KIFSequenceScenario.h in Headers */,
+				2C17F39716C191110017B499 /* KIFTestScenario.h in Headers */,
 				F58185D216B861F400584A52 /* UIDevice+Private.h in Headers */,
 				2C17F39316C178860017B499 /* KIFFlowScenario.h in Headers */,
-				2C17F39716C191110017B499 /* KIFSequenceScenario.h in Headers */,
+				2C17F39716C191110017B499 /* KIFTestScenario.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,7 +287,7 @@
 				29EA6F3F16ADF6B500E904B2 /* KIFJunitTestLogger.m in Sources */,
 				29EA6F4316ADF6CA00E904B2 /* KIFTestLogger.m in Sources */,
 				2C17F39416C178860017B499 /* KIFFlowScenario.m in Sources */,
-				2C17F39816C191110017B499 /* KIFSequenceScenario.m in Sources */,
+				2C17F39816C191110017B499 /* KIFTestScenario.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,12 +1,12 @@
 //
-//  KIFSequenceScenario.m
+//  KIFTestScenario.m
 //  KIF
 //
 //  Created by Justin Kolb on 2/5/13.
 //
 //
 
-#import "KIFSequenceScenario.h"
+#import "KIFTestScenario.h"
 #import "KIFTestStep.h"
 
 
@@ -14,7 +14,7 @@ static NSArray *defaultStepsToSetUp = nil;
 static NSArray *defaultStepsToTearDown = nil;
 
 
-@interface KIFSequenceScenario ()
+@interface KIFTestScenario ()
 
 @property (nonatomic) NSUInteger currentStepIndex;
 @property (nonatomic, readwrite, retain) NSArray *steps;
@@ -24,7 +24,7 @@ static NSArray *defaultStepsToTearDown = nil;
 @end
 
 
-@implementation KIFSequenceScenario
+@implementation KIFTestScenario
 
 @synthesize steps;
 @synthesize stepsToSetUp;
