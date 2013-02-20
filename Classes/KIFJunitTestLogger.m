@@ -18,7 +18,7 @@
 
 static NSMutableDictionary* durations = nil;
 static NSMutableDictionary* errors = nil;
-static KIFTestScenario* currentScenario = nil;
+static KIFBaseScenario* currentScenario = nil;
 
 -(id)initWithLogDirectoryPath:(NSString*)path{
     self = [self init];
@@ -112,7 +112,7 @@ static KIFTestScenario* currentScenario = nil;
     
     [self appendToLog:data];
     
-    for (KIFTestScenario* scenario in testController.scenarios) { 
+    for (KIFBaseScenario* scenario in testController.scenarios) { 
         NSNumber* duration = [durations objectForKey: [scenario description]];
         NSError* error = [errors objectForKey: [scenario description]];
         
@@ -134,12 +134,12 @@ static KIFTestScenario* currentScenario = nil;
     NSLog(@"JUnit results can be found at %@",self.logDirectoryPath);
 }
 
-- (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFTestScenario *)scenario;
+- (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFBaseScenario *)scenario;
 {
     currentScenario = scenario;
 }
 
-- (void)testController:(KIFTestController*)testController logDidSkipScenario:(KIFTestScenario *)scenario;
+- (void)testController:(KIFTestController*)testController logDidSkipScenario:(KIFBaseScenario *)scenario;
 {
 
 }
@@ -149,7 +149,7 @@ static KIFTestScenario* currentScenario = nil;
     
 }
 
-- (void)testController:(KIFTestController*)testController logDidFinishScenario:(KIFTestScenario *)scenario duration:(NSTimeInterval)duration;
+- (void)testController:(KIFTestController*)testController logDidFinishScenario:(KIFBaseScenario *)scenario duration:(NSTimeInterval)duration;
 {
     NSNumber* number = [[NSNumber alloc] initWithDouble: duration];
     [durations setValue: number forKey: [scenario description]];

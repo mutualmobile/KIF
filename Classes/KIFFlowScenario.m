@@ -95,8 +95,8 @@
 - (KIFTestStep *)currentStep {
     id step = [self.steps objectForKey:self.currentStepName];
     
-    if ([step isKindOfClass:[KIFTestScenario class]]) {
-        KIFTestScenario *scenario = step;
+    if ([step isKindOfClass:[KIFBaseScenario class]]) {
+        KIFBaseScenario *scenario = step;
         
         return [scenario currentStep];
     } else {
@@ -108,8 +108,8 @@
     self.currentStepName = self.startStepName;
     id step = [self.steps objectForKey:self.currentStepName];
     
-    if ([step isKindOfClass:[KIFTestScenario class]]) {
-        KIFTestScenario *scenario = step;
+    if ([step isKindOfClass:[KIFBaseScenario class]]) {
+        KIFBaseScenario *scenario = step;
         [scenario start];
     }
 }
@@ -117,8 +117,8 @@
 - (void)advanceToNextStep {
     id <KIFTestResult> stepObject = [self.steps objectForKey:self.currentStepName];
     
-    if ([stepObject isKindOfClass:[KIFTestScenario class]]) {
-        KIFTestScenario *scenario = stepObject;
+    if ([stepObject isKindOfClass:[KIFBaseScenario class]]) {
+        KIFBaseScenario *scenario = stepObject;
         
         if (scenario.returnsResult) {
             id <KIFTestResult> resultObject = [scenario currentStep];
@@ -141,8 +141,8 @@
     self.currentStepName = [self nextStepNameAfter:from withResult:result];
     id nextStepObject = [self.steps objectForKey:self.currentStepName];
     
-    if ([nextStepObject isKindOfClass:[KIFTestScenario class]]) {
-        KIFTestScenario *nextScenario = nextStepObject;
+    if ([nextStepObject isKindOfClass:[KIFBaseScenario class]]) {
+        KIFBaseScenario *nextScenario = nextStepObject;
         [nextScenario start];
     }
 }

@@ -6,7 +6,7 @@
 //
 //
 
-#import "KIFTestScenario.h"
+#import "KIFBaseScenario.h"
 
 
 
@@ -14,7 +14,7 @@
 
 
 
-@interface KIFFlowScenario : KIFTestScenario
+@interface KIFFlowScenario : KIFBaseScenario
 
 - (void)addSteps:(NSDictionary *)steps;
 - (void)addStep:(id)step forName:(NSString *)name;

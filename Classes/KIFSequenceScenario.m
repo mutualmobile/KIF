@@ -95,8 +95,8 @@ static NSArray *defaultStepsToTearDown = nil;
     
     id step = [self.steps objectAtIndex:self.currentStepIndex];
     
-    if ([step isKindOfClass:[KIFTestScenario class]]) {
-        KIFTestScenario *scenario = step;
+    if ([step isKindOfClass:[KIFBaseScenario class]]) {
+        KIFBaseScenario *scenario = step;
         
         return [scenario currentStep];
     } else {
@@ -108,8 +108,8 @@ static NSArray *defaultStepsToTearDown = nil;
     self.currentStepIndex = 0;
     id step = [self.steps objectAtIndex:self.currentStepIndex];
     
-    if ([step isKindOfClass:[KIFTestScenario class]]) {
-        KIFTestScenario *scenario = step;
+    if ([step isKindOfClass:[KIFBaseScenario class]]) {
+        KIFBaseScenario *scenario = step;
         [scenario start];
     }
 }
@@ -117,8 +117,8 @@ static NSArray *defaultStepsToTearDown = nil;
 - (void)advanceToNextStep {
     id <KIFTestResult> stepObject = [self.steps objectAtIndex:self.currentStepIndex];
     
-    if ([stepObject isKindOfClass:[KIFTestScenario class]]) {
-        KIFTestScenario *scenario = stepObject;
+    if ([stepObject isKindOfClass:[KIFBaseScenario class]]) {
+        KIFBaseScenario *scenario = stepObject;
         
         if (scenario.returnsResult) {
             id <KIFTestResult> resultObject = [scenario currentStep];
@@ -146,8 +146,8 @@ static NSArray *defaultStepsToTearDown = nil;
     
     id nextStepObject = self.steps[self.currentStepIndex];
     
-    if ([nextStepObject isKindOfClass:[KIFTestScenario class]]) {
-        KIFTestScenario *nextScenario = nextStepObject;
+    if ([nextStepObject isKindOfClass:[KIFBaseScenario class]]) {
+        KIFBaseScenario *nextScenario = nextStepObject;
         [nextScenario start];
     }
 }

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class KIFTestController;
-@class KIFTestScenario;
+@class KIFBaseScenario;
 @class KIFTestStep;
 
 @protocol KIFTestLoggerProtocol <NSObject>
@@ -18,13 +18,13 @@
 
 - (void)testControllerLogTestingDidFinish:(KIFTestController*)testController;
 
-- (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFTestScenario *)scenario;
+- (void)testController:(KIFTestController*)testController logDidStartScenario:(KIFBaseScenario *)scenario;
 
-- (void)testController:(KIFTestController*)testController logDidSkipScenario:(KIFTestScenario *)scenario;
+- (void)testController:(KIFTestController*)testController logDidSkipScenario:(KIFBaseScenario *)scenario;
 
 - (void)testController:(KIFTestController*)testController logDidSkipAddingScenarioGenerator:(NSString *)selectorString;
 
-- (void)testController:(KIFTestController*)testController logDidFinishScenario:(KIFTestScenario *)scenario duration:(NSTimeInterval)duration;
+- (void)testController:(KIFTestController*)testController logDidFinishScenario:(KIFBaseScenario *)scenario duration:(NSTimeInterval)duration;
 
 - (void)testController:(KIFTestController*)testController logDidFailStep:(KIFTestStep *)step duration:(NSTimeInterval)duration error:(NSError *)error;
 

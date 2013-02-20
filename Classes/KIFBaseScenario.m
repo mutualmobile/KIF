@@ -1,5 +1,5 @@
 //
-//  KIFTestScenario.m
+//  KIFBaseScenario.m
 //  KIF
 //
 //  Created by Michael Thole on 5/20/11.
@@ -7,12 +7,12 @@
 //  See the LICENSE file distributed with this work for the terms under
 //  which Square, Inc. licenses this file to you.
 
-#import "KIFTestScenario.h"
+#import "KIFBaseScenario.h"
 #import "KIFTestStep.h"
 
 
 
-@interface KIFTestScenario ()
+@interface KIFBaseScenario ()
 
 @property (nonatomic, strong) NSMutableDictionary *state;
 
@@ -20,7 +20,7 @@
 
 
 
-@implementation KIFTestScenario
+@implementation KIFBaseScenario
 
 #pragma mark Static Methods
 

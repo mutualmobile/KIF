@@ -1,5 +1,5 @@
 //
-//  KIFTestScenario.h
+//  KIFBaseScenario.h
 //  KIF
 //
 //  Created by Michael Thole on 5/20/11.
@@ -17,7 +17,7 @@
 
 
 
-@interface KIFTestScenario : NSObject <KIFTestResult>
+@interface KIFBaseScenario : NSObject <KIFTestResult>
 
 @property (nonatomic, strong) id result;
 @property (nonatomic) BOOL returnsResult;
